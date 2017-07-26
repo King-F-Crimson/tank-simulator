@@ -6,6 +6,7 @@ public class Camera_Controller : MonoBehaviour {
 	public string[] tracked_tags = new string[] {"Projectile", "Player"};
 	public float movement_speed = 2f;
 	public float minimum_orthographic_size = 4f;
+	public float margin = 1f;
 
 	// Use this for initialization
 	void Start () {
@@ -74,5 +75,7 @@ public class Camera_Controller : MonoBehaviour {
 		if (camera.orthographicSize < minimum_orthographic_size) {
 			camera.orthographicSize = minimum_orthographic_size;
 		}
+
+		camera.orthographicSize = camera.orthographicSize + margin;
 	}
 }
