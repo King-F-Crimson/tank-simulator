@@ -5,6 +5,7 @@ using UnityEngine;
 public class Camera_Controller : MonoBehaviour {
 	public string[] tracked_tags = new string[] {"Projectile", "Player"};
 	public float movement_speed = 2f;
+	public float zoom_speed = 10f;
 	public float minimum_orthographic_size = 4f;
 	public float margin = 1f;
 
@@ -18,7 +19,7 @@ public class Camera_Controller : MonoBehaviour {
 		float min_x, min_y, max_x, max_y;
 		CalculateBounds(out min_x, out min_y, out max_x, out max_y);
 		UpdateCameraPosition(min_x, min_y, max_x, max_y, Time.deltaTime);
-		UpdateCameraSize(min_x, min_y, max_x, max_y);
+		UpdateCameraSize(min_x, min_y, max_x, max_y, Time.deltaTime);
 	}
 
 	void CalculateBounds(out float min_x, out float min_y, out float max_x, out float max_y) {
@@ -51,7 +52,9 @@ public class Camera_Controller : MonoBehaviour {
 		transform.position = Vector3.MoveTowards(transform.position, middle_position, step);
 	}
 
-	void UpdateCameraSize(float min_x, float min_y, float max_x, float max_y) {
+	void UpdateCameraSize(float min_x, float min_y, float max_x, float max_y, float time) {
+		float step = zoom_speed * time;
+
 		// Set x_range and y_range to the longer distance between the current camera position to the minimum or maximum.
 		float x_range = max_x - transform.position.x;
 		if (x_range < transform.position.x - min_x) {
@@ -68,14 +71,16 @@ public class Camera_Controller : MonoBehaviour {
 		float x_bound = x_range / camera.aspect; // Find the required camera height to fit all x_range.
 
 		// Choose the biggest between fit all object in y_range, x_range, or minimum size to fit all objects or fulfill minimum size.
-		camera.orthographicSize = y_range;
-		if (camera.orthographicSize < x_bound) {
-			camera.orthographicSize = x_bound;
+		float new_orthographic_size = y_range;
+		if (new_orthographic_size < x_bound) {
+			new_orthographic_size = x_bound;
 		}
-		if (camera.orthographicSize < minimum_orthographic_size) {
-			camera.orthographicSize = minimum_orthographic_size;
+		if (new_orthographic_size < minimum_orthographic_size) {
+			new_orthographic_size = minimum_orthographic_size;
 		}
+		new_orthographic_size = new_orthographic_size + margin;
 
-		camera.orthographicSize = camera.orthographicSize + margin;
+		// Change the camera size in steps.
+		camera.orthographicSize = Mathf.MoveTowards(camera.orthographicSize, new_orthographic_size, step);
 	}
 }
