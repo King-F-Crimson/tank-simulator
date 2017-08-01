@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Camera_Controller : MonoBehaviour {
 	public string[] tracked_tags = new string[] {"Projectile", "Player"};
-	public float movement_speed = 2f;
-	public float zoom_speed = 10f;
+	public float movement_speed = 5f;
+	public float zoom_speed = 15f;
 	public float minimum_orthographic_size = 4f;
 	public float margin = 1f;
 
