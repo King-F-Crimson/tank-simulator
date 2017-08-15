@@ -6,12 +6,14 @@ using System;
 
 public class Write_Equation : MonoBehaviour {
 	public GameObject shooter;
+    public GameObject[] equations;
+    public int base_text_size = 150;
 
-	private Text equation;
+    private string[] equation_texts = {"", "", "", ""};
 
 	// Use this for initialization
 	void Start () {
-		equation = GetComponent<Text>();
+
 	}
 	
 	// Update is called once per frame
@@ -19,49 +21,53 @@ public class Write_Equation : MonoBehaviour {
 		Vector3 position; Quaternion rotation; float v_velocity; float h_velocity;
 		shooter.GetComponent<Shoot>().GetProjectileInstantiationData(out position, out rotation, out v_velocity, out h_velocity);
 
-        string[] equation_text = new string[4];
+		float air_time = AirTime(out equation_texts[0], Physics.gravity[1], v_velocity, position.y);
+		float time_to_reach_max_height = TimeToReachMaxHeight(out equation_texts[1], Physics.gravity[1], v_velocity);
+		float maximum_height = MaximumHeight(out equation_texts[2], Physics.gravity[1], v_velocity, position.y, time_to_reach_max_height);
+		float horizontal_distance = HorizontalDistance(out equation_texts[3], air_time, h_velocity);
 
-		float air_time = AirTime(out equation_text[0], Physics.gravity[1], v_velocity, position.y);
-		float time_to_reach_max_height = TimeToReachMaxHeight(out equation_text[1], Physics.gravity[1], v_velocity);
-		float maximum_height = MaximumHeight(out equation_text[2], Physics.gravity[1], v_velocity, position.y, time_to_reach_max_height);
-		float horizontal_distance = HorizontalDistance(out equation_text[3], air_time, h_velocity);
-
-		equation.text = String.Format(@"{0}
-{1}
-{2}
-{3}",
-		equation_text[0], equation_text[1], equation_text[2], equation_text[3]);
+        for (int i = 0; i <= 3; i++) {
+            equations[i].GetComponent<Text>().text = equation_texts[i];
+        }
 	}
 
 	float AirTime(out string text, float gravity, float v_velocity, float height) {
+        int v_text_size = (int)Math.Round(base_text_size * ((v_velocity) / 5.00 + 0.5));
+
 		float air_time = (-v_velocity - (float)Math.Sqrt(Math.Pow(v_velocity, 2) - 2 * gravity * height)) / gravity;
-        text = String.Format("Air time = (-v - \u221A(v\u00B2 - 2gh)) / g");
-        text = text + String.Format(" = (-{1:0.00} - \u221A({1:0.00}\u00B2 - 2*{0:0.00}*{2:0.00})) / {0:0.00} = {3:0.00}",
-            gravity, v_velocity, height, air_time);
+        text = String.Format("Air time = <size={1}>{0:0.00}</size>\n-<size={1}>v</size> - \u221A(<size={1}>v\u00B2</size> - 2gh)\n────────────────────\ng\n", air_time, v_text_size);
+        text = text + String.Format("\n-<size={3}>{1:0.00}</size> - \u221A(<size={3}>{1:0.00}</size>\u00B2 - 2*{0:0.00}*{2:0.00})\n────────────────────\n{0:0.00}",
+            gravity, v_velocity, height, v_text_size);
 
 		return air_time;
 	}
 
 	float TimeToReachMaxHeight(out string text, float gravity, float v_velocity) {
+        int v_text_size = (int)Math.Round(base_text_size * ((v_velocity) / 5.00 + 0.5));
+
 		float time_to_reach_max_height = v_velocity / -gravity;
-        text = "Time to reach maximum height = -(v / g)";
-        text = text + String.Format(" = -({1:0.00} / {0:0.00}) = {2:0.00}", gravity, v_velocity, time_to_reach_max_height);
+        text = String.Format("Time to reach maximum height = -(<size={0}>v</size> / g)", v_text_size);
+        text = text + String.Format(" = -(<size={3}>{1:0.00}</size> / {0:0.00}) = <size={3}>{2:0.00}</size>", gravity, v_velocity, time_to_reach_max_height, v_text_size);
 		
 		return time_to_reach_max_height;
 	}
 
 	float MaximumHeight(out string text, float gravity, float v_velocity, float height, float time_to_reach_max_height) {
+        int v_text_size = (int)Math.Round(base_text_size * ((v_velocity) / 5.00 + 0.5));
+
 		float maximum_height = height + v_velocity / 2 * time_to_reach_max_height;
-        text = "Maximum height = h + (v / 2 * time_to_reach_max_height)";
-        text = text + String.Format(" = {2:0.00} + ({1:0.00} / 2 * {0:0.00}) = {3:0.00}", time_to_reach_max_height, v_velocity, height, maximum_height);
+        text = String.Format("Maximum height = h + (<size={0}>v</size> / 2 * time_to_reach_max_height)", v_text_size);
+        text = text + String.Format(" = {2:0.00} + (<size={4}>{1:0.00}</size> / 2 * {0:0.00}) = {3:0.00}", time_to_reach_max_height, v_velocity, height, maximum_height, v_text_size);
 
 		return maximum_height;
 	}
 
     float HorizontalDistance(out string text, float air_time, float h_velocity) {
+        int h_text_size = (int)Math.Round(base_text_size * ((h_velocity) / 5.00 + 0.5));
+
         float horizontal_distance = air_time * h_velocity;
-        text = "Horizontal distance = air_time * horizontal_velocity";
-        text = text + String.Format(" = {0:0.00} * {1:0.00} = {2:0.00}", air_time, h_velocity, horizontal_distance);
+        text = String.Format("Horizontal distance = air_time * <size={0}>horizontal_velocity</size>", h_text_size);
+        text = text + String.Format(" = {0:0.00} * <size={3}>{1:0.00}</size> = <size={3}>{2:0.00}</size>", air_time, h_velocity, horizontal_distance, h_text_size);
 
         return horizontal_distance;
     }

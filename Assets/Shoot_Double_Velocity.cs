@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Shoot : MonoBehaviour {
+public class Shoot_Double_Velocity : MonoBehaviour {
 
 	public GameObject projectile;
-	public Slider velocitySlider;
-	public Slider angleSlider;
+	public Slider verticalVelocitySlider;
+	public Slider horizontalVelocitySlider;
 
 	public Vector3 muzzlePosition;
 
@@ -17,10 +17,11 @@ public class Shoot : MonoBehaviour {
 
 	// Use this for initialization.
 	void Start () {
-		velocitySlider.onValueChanged.AddListener(delegate {ChangeVelocity(); });
-		angleSlider.onValueChanged.AddListener(delegate {ChangeVelocity(); });
+		verticalVelocitySlider.onValueChanged.AddListener(delegate {ChangeVelocity(); });
+		horizontalVelocitySlider.onValueChanged.AddListener(delegate {ChangeVelocity(); });
 
-		ChangeVelocity();
+		verticalVelocity = verticalVelocitySlider.value;
+		horizontalVelocity = horizontalVelocitySlider.value;
 	}
 	
 	// Update is called once per frame.
@@ -34,8 +35,8 @@ public class Shoot : MonoBehaviour {
 	}
 
 	void ChangeVelocity() {
-		verticalVelocity = velocitySlider.value * (float)Math.Sin(angleSlider.value * Math.PI / 180);
-		horizontalVelocity = velocitySlider.value * (float)Math.Cos(angleSlider.value * Math.PI / 180);
+		verticalVelocity = verticalVelocitySlider.value;
+		horizontalVelocity = horizontalVelocitySlider.value;
 	}
 
 	// Returns the initial coordinates and velocities.
