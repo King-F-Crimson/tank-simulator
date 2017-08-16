@@ -5,11 +5,11 @@ using UnityEngine.UI;
 using System;
 
 public class Write_Equation : MonoBehaviour {
-	public GameObject shooter;
+	public Shoot shooter;
     public GameObject[] equations;
     public int base_text_size = 150;
 
-    private string[] equation_texts = {"", "", "", ""};
+    private string[] equation_texts = {"", "", "", "", ""};
 
 	// Use this for initialization
 	void Start () {
@@ -19,14 +19,15 @@ public class Write_Equation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Vector3 position; Quaternion rotation; float v_velocity; float h_velocity;
-		shooter.GetComponent<Shoot>().GetProjectileInstantiationData(out position, out rotation, out v_velocity, out h_velocity);
+		shooter.GetProjectileInstantiationData(out position, out rotation, out v_velocity, out h_velocity);
 
 		float air_time = AirTime(out equation_texts[0], Physics.gravity[1], v_velocity, position.y);
 		float time_to_reach_max_height = TimeToReachMaxHeight(out equation_texts[1], Physics.gravity[1], v_velocity);
 		float maximum_height = MaximumHeight(out equation_texts[2], Physics.gravity[1], v_velocity, position.y, time_to_reach_max_height);
 		float horizontal_distance = HorizontalDistance(out equation_texts[3], air_time, h_velocity);
+        Velocity(out equation_texts[4], v_velocity, h_velocity);
 
-        for (int i = 0; i <= 3; i++) {
+        for (int i = 0; i <= 4; i++) {
             equations[i].GetComponent<Text>().text = equation_texts[i];
         }
 	}
@@ -56,7 +57,7 @@ public class Write_Equation : MonoBehaviour {
         int v_text_size = (int)Math.Round(base_text_size * ((v_velocity) / 5.00 + 0.5));
 
 		float maximum_height = height + v_velocity / 2 * time_to_reach_max_height;
-        text = String.Format("Maximum height = h + (<size={0}>v</size> / 2 * time_to_reach_max_height)", v_text_size);
+        text = String.Format("Maximum height = h + (<size={0}>v</size> / 2 * time to reach max height)", v_text_size);
         text = text + String.Format(" = {2:0.00} + (<size={4}>{1:0.00}</size> / 2 * {0:0.00}) = {3:0.00}", time_to_reach_max_height, v_velocity, height, maximum_height, v_text_size);
 
 		return maximum_height;
@@ -66,9 +67,14 @@ public class Write_Equation : MonoBehaviour {
         int h_text_size = (int)Math.Round(base_text_size * ((h_velocity) / 5.00 + 0.5));
 
         float horizontal_distance = air_time * h_velocity;
-        text = String.Format("Horizontal distance = air_time * <size={0}>horizontal_velocity</size>", h_text_size);
+        text = String.Format("Horizontal distance = air time * <size={0}>hv</size>", h_text_size);
         text = text + String.Format(" = {0:0.00} * <size={3}>{1:0.00}</size> = <size={3}>{2:0.00}</size>", air_time, h_velocity, horizontal_distance, h_text_size);
 
         return horizontal_distance;
+    }
+
+    void Velocity(out string text, float v_velocity, float h_velocity) {
+        text = String.Format("Vertical velocity = Total velocity * sin(\u03B8) = {0:0.00} * sin({1:0.00}) = {2:0.00}\n", shooter.GetVelocity(), shooter.GetAngle(), v_velocity);
+        text = text + String.Format("Horizontal velocity = Total velocity * cos(\u03B8) = {0:0.00} * cos({1:0.00}) = {2:0.00}\n", shooter.GetVelocity(), shooter.GetAngle(), h_velocity);
     }
 }

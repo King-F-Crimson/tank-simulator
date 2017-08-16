@@ -48,4 +48,12 @@ public class Shoot : MonoBehaviour {
 		verticalVelocityInput = verticalVelocity;
 		horizontalVelocityInput = horizontalVelocity;
 	}
+
+	public float GetVelocity() {
+		return velocitySlider.value;
+	}
+
+	public float GetAngle() {
+		return angleSlider.value;
+	}
 }
