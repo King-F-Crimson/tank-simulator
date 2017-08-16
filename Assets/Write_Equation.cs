@@ -47,8 +47,8 @@ public class Write_Equation : MonoBehaviour {
         int v_text_size = (int)Math.Round(base_text_size * ((v_velocity) / 5.00 + 0.5));
 
 		float time_to_reach_max_height = v_velocity / -gravity;
-        text = String.Format("Time to reach maximum height = -(<size={0}>v</size> / g)", v_text_size);
-        text = text + String.Format(" = -(<size={3}>{1:0.00}</size> / {0:0.00}) = <size={3}>{2:0.00}</size>", gravity, v_velocity, time_to_reach_max_height, v_text_size);
+        text = String.Format("Time to reach maximum height = <size={0}>{1:0.00}</size> =\n", v_text_size, time_to_reach_max_height);
+        text = text + String.Format("-(<size={2}>v</size> / g) = -(<size={2}>{1:0.00}</size> / {0:0.00})", gravity, v_velocity, v_text_size);
 		
 		return time_to_reach_max_height;
 	}
@@ -57,8 +57,8 @@ public class Write_Equation : MonoBehaviour {
         int v_text_size = (int)Math.Round(base_text_size * ((v_velocity) / 5.00 + 0.5));
 
 		float maximum_height = height + v_velocity / 2 * time_to_reach_max_height;
-        text = String.Format("Maximum height = h + (<size={0}>v</size> / 2 * time to reach max height)", v_text_size);
-        text = text + String.Format(" = {2:0.00} + (<size={4}>{1:0.00}</size> / 2 * {0:0.00}) = {3:0.00}", time_to_reach_max_height, v_velocity, height, maximum_height, v_text_size);
+        text = String.Format("Maximum height = <size={0}>{1:0.00}</size> =\nh + (<size={0}>v</size> / 2 * time to reach max height)", v_text_size, maximum_height);
+        text = text + String.Format(" = {2:0.00} + (<size={3}>{1:0.00}</size> / 2 * {0:0.00})", time_to_reach_max_height, v_velocity, height, v_text_size);
 
 		return maximum_height;
 	}
@@ -67,8 +67,8 @@ public class Write_Equation : MonoBehaviour {
         int h_text_size = (int)Math.Round(base_text_size * ((h_velocity) / 5.00 + 0.5));
 
         float horizontal_distance = air_time * h_velocity;
-        text = String.Format("Horizontal distance = air time * <size={0}>hv</size>", h_text_size);
-        text = text + String.Format(" = {0:0.00} * <size={3}>{1:0.00}</size> = <size={3}>{2:0.00}</size>", air_time, h_velocity, horizontal_distance, h_text_size);
+        text = String.Format("Horizontal distance = <size={0}>{1:0.00}</size> =\nair time * <size={0}>hv</size>", h_text_size, horizontal_distance);
+        text = text + String.Format(" = {0:0.00} * <size={2}>{1:0.00}</size>", air_time, h_velocity, h_text_size);
 
         return horizontal_distance;
     }
