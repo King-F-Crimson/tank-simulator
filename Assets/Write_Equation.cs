@@ -74,7 +74,7 @@ public class Write_Equation : MonoBehaviour {
     }
 
     void Velocity(out string text, float v_velocity, float h_velocity) {
-        text = String.Format("Vertical velocity = Total velocity * sin(\u03B8) = {0:0.00} * sin({1:0.00}) = {2:0.00}\n", shooter.GetVelocity(), shooter.GetAngle(), v_velocity);
-        text = text + String.Format("Horizontal velocity = Total velocity * cos(\u03B8) = {0:0.00} * cos({1:0.00}) = {2:0.00}\n", shooter.GetVelocity(), shooter.GetAngle(), h_velocity);
+        text = String.Format("Vertical velocity = {2:0.00} =\nTotal velocity * sin(\u03B8) = {0:0.00} * sin({1:0.00})\n", shooter.GetVelocity(), shooter.GetAngle(), v_velocity);
+        text = text + String.Format("Horizontal velocity = {2:0.00}=\nTotal velocity * cos(\u03B8) = {0:0.00} * cos({1:0.00})", shooter.GetVelocity(), shooter.GetAngle(), h_velocity);
     }
 }
