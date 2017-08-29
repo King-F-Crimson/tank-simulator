@@ -23,8 +23,8 @@ public class Write_Equation : MonoBehaviour {
 
 		float air_time = AirTime(out equation_texts[0], Physics.gravity[1], v_velocity, position.y);
 		float time_to_reach_max_height = TimeToReachMaxHeight(out equation_texts[1], Physics.gravity[1], v_velocity);
-		float maximum_height = MaximumHeight(out equation_texts[2], Physics.gravity[1], v_velocity, position.y, time_to_reach_max_height);
-		float horizontal_distance = HorizontalDistance(out equation_texts[3], air_time, h_velocity);
+		MaximumHeight(out equation_texts[2], Physics.gravity[1], v_velocity, position.y, time_to_reach_max_height);
+		HorizontalDistance(out equation_texts[3], air_time, h_velocity);
         Velocity(out equation_texts[4], v_velocity, h_velocity);
 
         for (int i = 0; i <= 4; i++) {
